@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import resolvers from "./resolvers";
 import typeDefs from "./schema";
-import models from "./models";
+import db from "./models";
 // import { authUser } from "./service/auth"
 import { createServer } from 'http';
 // import { execute, subscribe } from 'graphql';
@@ -19,7 +19,7 @@ const startServer = async () => {
   app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
   app.get('/', (req, res) => {
-    res.send('Welcome to slack-clone-server')
+    res.send('Welcome to graphqQL-slack-clone-server')
   })
 
   const apolloServer = new ApolloServer({
@@ -39,7 +39,7 @@ const startServer = async () => {
 
   const PORT = 5000;
   ////db connection
-  models.sequelize.sync({ alter: true, force: true }).then(() => {
+  db.sequelize.sync({ alter: false, force: false }).then(() => {
     server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}${apolloServer.graphqlPath}`)
 

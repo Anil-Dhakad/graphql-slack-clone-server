@@ -1,5 +1,5 @@
-export default (sequelize, DataTypes) => {
-  const User = sequelize.define('user', {
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
     username: {
       type: DataTypes.STRING,
       unique: true,
@@ -9,12 +9,15 @@ export default (sequelize, DataTypes) => {
       unique: true,
     },
     password: DataTypes.STRING,
-  });
+  }, { underscored: true });
 
   User.associate = (models) => {
     User.belongsToMany(models.Team, {
       through: 'member',
-      foreignKey: 'userId',
+      foreignKey: {
+        name: 'userId',
+        field: 'user_id'
+      }
     });
   };
 
