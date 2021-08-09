@@ -39,7 +39,7 @@ const startServer = async () => {
 
   const PORT = 5000;
   ////db connection
-  db.sequelize.sync({ alter: false, force: false }).then(() => {
+  db.sequelize.sync({ alter: true, force: true }).then(() => {
     server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}${apolloServer.graphqlPath}`)
 
