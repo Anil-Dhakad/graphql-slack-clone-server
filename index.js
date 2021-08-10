@@ -1,17 +1,17 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import cors from "cors";
-import resolvers from "./resolvers";
-import typeDefs from "./schema";
 import db from "./models";
-// import { authUser } from "./service/auth"
 import { createServer } from 'http';
-// import { execute, subscribe } from 'graphql';
-// import { SubscriptionServer } from 'subscriptions-transport-ws';
+import path from 'path'
+import { mergeTypes, fileLoader, mergeResolvers } from "merge-graphql-schemas";
 
 const app = express();
 
 const startServer = async () => {
+
+  const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')))
+  const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')))
 
   // app.use(authUser);
   app.use(cors());
@@ -27,7 +27,7 @@ const startServer = async () => {
     resolvers,
     introspection: true,
     playground: true,
-    context: ({ req, res }) => ({ req, res })
+    context: { db }
   });
 
   await apolloServer.start()
@@ -39,7 +39,7 @@ const startServer = async () => {
 
   const PORT = 5000;
   ////db connection
-  db.sequelize.sync({ alter: true, force: true }).then(() => {
+  db.sequelize.sync({ alter: true, force: false }).then(() => {
     server.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}${apolloServer.graphqlPath}`)
 

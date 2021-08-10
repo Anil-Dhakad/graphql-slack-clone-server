@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Message = sequelize.define('Message', {
     text: DataTypes.STRING,
-  }, { underscored: true });
+  });
 
   Message.associate = (models) => {
     Message.belongsTo(models.Channel, {

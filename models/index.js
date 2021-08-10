@@ -22,8 +22,6 @@ fs
     db[model.name] = model;
   });
 
-console.log('db: ', db)
-
 Object.keys(db).forEach(modelName => {
   if ("associate" in db[modelName]) {
     db[modelName].associate(db);
@@ -32,7 +30,6 @@ Object.keys(db).forEach(modelName => {
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
 
 
 module.exports = db;
